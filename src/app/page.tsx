@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+
+
 const projectImages = [
   "/projects/project1.png",
   "/projects/project2.png",
@@ -44,31 +46,43 @@ const experiences = [
 export default function Home() {
   const [currentProject, setCurrentProject] = useState(0);
   const [visibleSkills, setVisibleSkills] = useState([0, 1, 2]);
-  const [isInView, setIsInView] = useState({});
   const [currentTitle, setCurrentTitle] = useState(0);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   
-  const sectionRefs = {
-    projects: useRef(null),
-    skills: useRef(null),
-    titles: useRef(null),
-    experience: useRef(null),
-  };
+const sectionRefs = {
+  projects: useRef(null),
+  skills: useRef(null),
+  titles: useRef(null),
+  experience: useRef(null),
+} as const;
+
+type Section = keyof typeof sectionRefs;
+
+const [isInView, setIsInView] = useState<Record<Section, boolean>>({
+  projects: false,
+  skills: false,
+  titles: false,
+  experience: false,
+});
+
 
   // Cursor effect
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setCursorPosition({ x: e.clientX, y: e.clientY });
-    };
+const handleMouseMove = (e: MouseEvent) => {
+  setCursorPosition({ x: e.clientX, y: e.clientY });
+};
+
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
+
+
   // Intersection Observer for animations
   useEffect(() => {
-    const observers = [];
+const observers: IntersectionObserver[] = [];
     
     Object.entries(sectionRefs).forEach(([key, ref]) => {
       if (ref.current) {
@@ -83,11 +97,12 @@ export default function Home() {
         observers.push(observer);
       }
     });
-    
+  
     return () => {
       observers.forEach(observer => observer.disconnect());
     };
   }, []);
+  
 
   // Auto-rotate projects
   useEffect(() => {
@@ -178,22 +193,25 @@ export default function Home() {
       </div>
 
       {/* Header with navigation */}
-      <header className="w-full bg-gray-900/80 backdrop-blur-md py-6 px-8 sticky top-0 z-40 flex justify-between items-center">
-        <div className="text-2xl font-bold text-cyan-400">ESL</div>
-        <nav className="hidden md:flex space-x-6">
-          {Object.keys(sectionRefs).map(section => (
-            <button
-              key={section}
-              className={`py-1 px-3 transition-all capitalize ${
-                isInView[section] ? "text-cyan-400 border-b-2 border-cyan-400" : "text-gray-400 hover:text-white"
-              }`}
-              onClick={() => sectionRefs[section].current.scrollIntoView({ behavior: 'smooth' })}
-            >
-              {section}
-            </button>
-          ))}
-        </nav>
-      </header>
+    <header className="w-full bg-gray-900/80 backdrop-blur-md py-6 px-8 sticky top-0 z-40 flex justify-between items-center">
+      <div className="text-2xl font-bold text-cyan-400">ESL</div>
+      <nav className="hidden md:flex space-x-6">
+        {(Object.keys(sectionRefs) as Section[]).map((section) => (
+          <button
+            key={section}
+            className={`py-1 px-3 transition-all capitalize ${
+              isInView[section]
+                ? 'text-cyan-400 border-b-2 border-cyan-400'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          
+          >
+            {section}
+          </button>
+        ))}
+      </nav>
+    </header>
+
 
       {/* Hero section */}
       <section className="relative w-full h-screen flex items-center justify-center px-6 overflow-hidden">
@@ -218,7 +236,6 @@ export default function Home() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full font-semibold text-lg"
-              onClick={() => sectionRefs.projects.current.scrollIntoView({ behavior: 'smooth' })}
             >
               Ver Proyectos
             </motion.button>
