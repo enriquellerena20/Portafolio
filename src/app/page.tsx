@@ -1,9 +1,6 @@
 "use client";
-
 import Image from "next/image";
-import { useState, useCallback } from "react";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
+import { useState } from "react";
 
 const projectImages = [
   "/projects/project1.png",
@@ -12,11 +9,10 @@ const projectImages = [
 ];
 
 const titleImages = [
-
   "/titles/Imprimir (1)_page-0001.jpg",
   "/titles/Imprimir (3)_page-0001.jpg",
   "/titles/Imprimir_page-0001 (1).jpg",
-    "/titles/CERCURDIP-Llerena-26_7_2023-151026 (1)_page-0001.jpg",
+  "/titles/CERCURDIP-Llerena-26_7_2023-151026 (1)_page-0001.jpg",
   "/titles/CERCURDIP-Llerena-26_7_2023-151026 (1)_page-0002.jpg",
 ];
 
@@ -49,50 +45,18 @@ export default function Home() {
     setSkillIndex((skillIndex - 1 + skills.length) % skills.length);
   };
 
-  const particlesInit = useCallback(async (engine) => {
-    await loadFull(engine);
-  }, []);
-
   return (
     <main className="relative min-h-screen bg-transparent text-white z-10 font-sans flex flex-col items-center justify-start p-6 space-y-16 overflow-hidden">
-      {/* Fondo con imagen y partículas */}
-<div className="absolute inset-0 -z-10">
-  <Image
-    src="/fondo.png"
-    alt="Fondo"
-    fill
-    priority
-    style={{ objectFit: "cover", opacity: 0.3 }}
-  />
-  <Particles
-    id="tsparticles"
-    init={particlesInit}
-    options={{
-      fullScreen: false,
-      background: { color: "transparent" },
-      particles: {
-        number: { value: 50 },
-        color: { value: "#00ffff" },
-        shape: { type: "circle" },
-        opacity: { value: 0.5 },
-        size: { value: 2 },
-        move: { enable: true, speed: 1 },
-        links: { enable: true, distance: 100, color: "#00ffff", opacity: 0.3 }
-      },
-      interactivity: {
-        events: {
-          onHover: { enable: true, mode: "repulse" },
-          resize: true
-        },
-        modes: {
-          repulse: { distance: 100, duration: 0.4 }
-        }
-      },
-      detectRetina: true
-    }}
-    className="absolute w-full h-full"
-  />
-</div>
+      {/* Fondo con imagen */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/fondo.png"
+          alt="Fondo"
+          fill
+          priority
+          style={{ objectFit: "cover", opacity: 0.3 }}
+        />
+      </div>
 
       {/* Banner principal */}
       <section className="text-center space-y-4 mt-10">
