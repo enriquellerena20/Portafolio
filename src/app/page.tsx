@@ -1,103 +1,172 @@
+"use client";
+
 import Image from "next/image";
+import { useState, useCallback } from "react";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+
+const projectImages = [
+  "/projects/project1.png",
+  "/projects/project2.png",
+  "/projects/project3.png",
+];
+
+const titleImages = [
+
+  "/titles/Imprimir (1)_page-0001.jpg",
+  "/titles/Imprimir (3)_page-0001.jpg",
+  "/titles/Imprimir_page-0001 (1).jpg",
+    "/titles/CERCURDIP-Llerena-26_7_2023-151026 (1)_page-0001.jpg",
+  "/titles/CERCURDIP-Llerena-26_7_2023-151026 (1)_page-0002.jpg",
+];
+
+const skills = [
+  { src: "/skills/laravel.png", name: "Laravel" },
+  { src: "/skills/next.jpeg", name: "Next.js" },
+  { src: "/skills/react.png", name: "React" },
+  { src: "/skills/js.jpeg", name: "JavaScript" },
+  { src: "/skills/css.png", name: "Tailwind CSS" },
+  { src: "/skills/mysql.png", name: "MySQL" },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [skillIndex, setSkillIndex] = useState(0);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const nextSlide = () => {
+    setCurrentIndex((currentIndex + 1) % projectImages.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((currentIndex - 1 + projectImages.length) % projectImages.length);
+  };
+
+  const nextSkill = () => {
+    setSkillIndex((skillIndex + 1) % skills.length);
+  };
+
+  const prevSkill = () => {
+    setSkillIndex((skillIndex - 1 + skills.length) % skills.length);
+  };
+
+  const particlesInit = useCallback(async (engine) => {
+    await loadFull(engine);
+  }, []);
+
+  return (
+    <main className="relative min-h-screen bg-transparent text-white z-10 font-sans flex flex-col items-center justify-start p-6 space-y-16 overflow-hidden">
+      {/* Fondo con imagen y partículas */}
+<div className="absolute inset-0 -z-10">
+  <Image
+    src="/fondo.png"
+    alt="Fondo"
+    fill
+    priority
+    style={{ objectFit: "cover", opacity: 0.3 }}
+  />
+  <Particles
+    id="tsparticles"
+    init={particlesInit}
+    options={{
+      fullScreen: false,
+      background: { color: "transparent" },
+      particles: {
+        number: { value: 50 },
+        color: { value: "#00ffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 2 },
+        move: { enable: true, speed: 1 },
+        links: { enable: true, distance: 100, color: "#00ffff", opacity: 0.3 }
+      },
+      interactivity: {
+        events: {
+          onHover: { enable: true, mode: "repulse" },
+          resize: true
+        },
+        modes: {
+          repulse: { distance: 100, duration: 0.4 }
+        }
+      },
+      detectRetina: true
+    }}
+    className="absolute w-full h-full"
+  />
+</div>
+
+      {/* Banner principal */}
+      <section className="text-center space-y-4 mt-10">
+        <h1 className="text-4xl md:text-6xl font-bold text-cyan-400">
+          Enrique Sebastian Llerena Rodriguez
+        </h1>
+        <h2 className="text-xl md:text-2xl">Ingeniero de Sistemas - Backend Especializado</h2>
+        <p className="max-w-2xl mx-auto text-gray-300">
+          Estudiante del 9.º ciclo en la Universidad Tecnológica del Perú. Especializado en
+          desarrollo backend, con experiencia en frontend y despliegue de proyectos. Trabajo con
+          Laravel y Next.js.
+        </p>
+      </section>
+
+      {/* Carrusel de proyectos */}
+      <section className="text-center">
+        <h2 className="text-3xl font-semibold mb-4 text-cyan-300">Proyectos</h2>
+        <div className="relative w-full max-w-xl mx-auto">
+          <Image
+            src={projectImages[currentIndex]}
+            alt={`Proyecto ${currentIndex + 1}`}
+            width={800}
+            height={500}
+            className="rounded-lg shadow-lg"
+          />
+          <div className="flex justify-between mt-4">
+            <button onClick={prevSlide}>←</button>
+            <button onClick={nextSlide}>→</button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      </section>
+
+      {/* Títulos */}
+      <section className="text-center">
+        <h2 className="text-3xl font-semibold mb-4 text-cyan-300">Títulos y Certificados</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {titleImages.map((src, idx) => (
+            <Image
+              key={idx}
+              src={src}
+              alt={`Título ${idx + 1}`}
+              width={300}
+              height={200}
+              className="rounded-md border border-cyan-500"
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Carrusel de habilidades */}
+      <section className="text-center">
+        <h2 className="text-3xl font-semibold mb-4 text-cyan-300">Habilidades</h2>
+        <div className="flex flex-col items-center space-y-4">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src={skills[skillIndex].src}
+            alt={skills[skillIndex].name}
+            width={80}
+            height={80}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+          <p className="text-xl">{skills[skillIndex].name}</p>
+          <div className="flex space-x-4">
+            <button onClick={prevSkill}>←</button>
+            <button onClick={nextSkill}>→</button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="w-full py-6 border-t border-cyan-800 mt-12 text-center text-gray-400">
+        <p>Contacto: enriquesebastianllerena@gmail.com</p>
+        <p>LinkedIn: Enrique Llerena</p>
+        <p>GitHub: enriquellerena20</p>
+        <p>San Martín de Porres</p>
       </footer>
-    </div>
+    </main>
   );
 }
